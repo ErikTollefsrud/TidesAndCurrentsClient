@@ -22,7 +22,7 @@ extension TidesClient {
             .map { $0.stations }
             .eraseToAnyPublisher()
         }, tidePredictionData: { stationId in
-        let url = URL(string: "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=20200929&end_date=20200930&datum=MLLW&station=\(stationId)&time_zone=LST&units=english&interval=hilo&format=json)")!
+        let url = URL(string: "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&range=24&datum=MLLW&station=\(stationId)&time_zone=LST&units=english&interval=hilo&format=json)")!
         
         return URLSession.shared.dataTaskPublisher(for: url)
             .map { data, _ in data }

@@ -13,7 +13,6 @@ public struct TidePredictions: Decodable {
     public init(predications: [Tide]) {
         self.predications = predications
     }
-    
 }
 
 public struct Tide: Decodable {
@@ -22,9 +21,11 @@ public struct Tide: Decodable {
         case low = "L"
     }
     
+    
     public let time: Date
     public let value: Double
     public let type: TideType
+    
     
     enum CodingKeys: String, CodingKey {
         case time = "t"
@@ -32,11 +33,13 @@ public struct Tide: Decodable {
         case type
     }
     
+    
     public init(time: Date, value: Double, type: Tide.TideType) {
         self.time = time
         self.value = value
         self.type = type
     }
+    
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -66,6 +69,7 @@ public struct Tide: Decodable {
             formatter.dateFormat = "yyyy-MM-dd HH:mm"
             return formatter
         }()
+    
     
     public enum TideError: Error {
         case decodingError(String)
