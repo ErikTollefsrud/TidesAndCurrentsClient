@@ -9,7 +9,7 @@ import Foundation
 
 public struct TidesClient {
     public var stations: () -> AnyPublisher<[Station], Failure>
-    public var tidePredictionData: (Int) -> AnyPublisher<TidePredictions, Failure>
+    public var tidePredictionData: (String) -> AnyPublisher<TidePredictions, Failure>
     
     public struct Failure: Error, Equatable {
         public init() {}
@@ -17,7 +17,7 @@ public struct TidesClient {
     
     public init(
         stations: @escaping () -> AnyPublisher<[Station], Failure>,
-        tidePredictionData: @escaping (Int) -> AnyPublisher<TidePredictions, Failure>
+        tidePredictionData: @escaping (String) -> AnyPublisher<TidePredictions, Failure>
     ) {
         self.stations = stations
         self.tidePredictionData = tidePredictionData
@@ -36,13 +36,13 @@ public struct StationLocations: Decodable {
 
 public struct Station: Decodable, Equatable, Identifiable {
     
-    public let id: Int
+    public let id: String
     public let name: String
     public let state: String
     public let latitude: Double
     public let longitude: Double
     
-    public init(id: Int, name: String, state: String, latitude: Double, longitude: Double) {
+    public init(id: String, name: String, state: String, latitude: Double, longitude: Double) {
         self.id = id
         self.name = name
         self.state = state
@@ -52,8 +52,7 @@ public struct Station: Decodable, Equatable, Identifiable {
     
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        let idString = try container.decode(String.self, forKey: .id)
-        let id = Int(idString)!
+        let id = try container.decode(String.self, forKey: .id)
         
         let name = try container.decode(String.self, forKey: .name)
         

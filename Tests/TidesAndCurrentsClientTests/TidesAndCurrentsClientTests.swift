@@ -6,7 +6,7 @@ final class TidesAndCurrentsClientTests: XCTestCase {
     func testExample() {
         let client = TidesClient.mock
         let test = client.stations()
-        XCTAssertEqual(client.stations, <#T##expression2: Equatable##Equatable#>)
+        //XCTAssertEqual(client.stations, <#T##expression2: Equatable##Equatable#>)
         
     }
 
