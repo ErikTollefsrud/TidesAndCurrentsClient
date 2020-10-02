@@ -4,20 +4,23 @@
 //  Created by Erik Tollefsrud on 9/14/20.
 //
 
-import ComposableArchitecture
+import Combine
 import Foundation
 
 public struct TidesClient {
-    public var stations: () -> Effect<[Station], Failure>
+    public var stations: () -> AnyPublisher<[Station], Failure>
+    public var tidePredictionData: (Int) -> AnyPublisher<TidePredictions, Failure>
     
     public struct Failure: Error, Equatable {
         public init() {}
     }
     
     public init(
-        stations: @escaping () -> Effect<[Station], Failure>
+        stations: @escaping () -> AnyPublisher<[Station], Failure>,
+        tidePredictionData: @escaping (Int) -> AnyPublisher<TidePredictions, Failure>
     ) {
         self.stations = stations
+        self.tidePredictionData = tidePredictionData
     }
 }
 
