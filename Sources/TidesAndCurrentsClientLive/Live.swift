@@ -27,7 +27,7 @@ extension TidesClient {
             formatter.dateFormat = "yyyyMMdd"
             let nowString = formatter.string(from: Date())
             
-            let url = URL(string: "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=\(nowString)&range=48&datum=MLLW&station=\(stationId)&time_zone=LST_LTD&units=english&interval=hilo&format=json)")!
+            let url = URL(string: "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=\(nowString)&range=48&datum=MLLW&station=\(stationId)&time_zone=LST_LDT&units=english&interval=hilo&format=json")!
             
             return URLSession.shared.dataTaskPublisher(for: url)
                 .map { data, _ in data }
