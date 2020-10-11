@@ -9,8 +9,8 @@ import Foundation
 
 public struct TidesClient {
     public var stations: () -> AnyPublisher<[Station], Failure>
-    public var tidePredictionData: (String) -> AnyPublisher<TidePredictions, Failure>
     
+    public var tidePredictionData: (String) -> AnyPublisher<TidePredictions, Failure>
     public struct Failure: Error, Equatable {
         public init() {}
     }

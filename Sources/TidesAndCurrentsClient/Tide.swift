@@ -15,7 +15,9 @@ public struct TidePredictions: Decodable {
     }
 }
 
-public struct Tide: Decodable {
+public struct Tide: Decodable, Equatable, Identifiable {
+    public var id: UUID
+    
     public enum TideType: String, Decodable {
         case high = "H"
         case low = "L"
@@ -34,7 +36,8 @@ public struct Tide: Decodable {
     }
     
     
-    public init(time: Date, value: Double, type: Tide.TideType) {
+    public init(id: UUID = UUID(), time: Date, value: Double, type: Tide.TideType) {
+        self.id = id
         self.time = time
         self.value = value
         self.type = type
