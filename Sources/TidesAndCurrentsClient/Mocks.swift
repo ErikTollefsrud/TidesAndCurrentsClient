@@ -18,7 +18,7 @@ extension TidesClient {
             ]).setFailureType(to: TidesClient.Failure.self)
             .eraseToAnyPublisher()
         }, tidePredictionData: { stationId in
-            return Just(TidePredictions(predications:
+            return Just(TidePredictions(predictions:
                                             [Tide(time: Date(), value: 10.0, type: .high)])
             ).setFailureType(to: TidesClient.Failure.self)
             .eraseToAnyPublisher()

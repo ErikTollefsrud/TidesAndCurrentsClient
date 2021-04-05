@@ -44,7 +44,7 @@ public struct Station: Decodable, Equatable, Identifiable {
     
     public init(id: String, name: String, state: String, latitude: Double, longitude: Double) {
         self.id = id
-        self.name = name
+        self.name = name.localizedCapitalized
         self.state = state
         self.latitude = latitude
         self.longitude = longitude
@@ -72,4 +72,16 @@ public struct Station: Decodable, Equatable, Identifiable {
         case latitude = "lat"
         case longitude = "lng"
     }
+}
+
+public struct StationResponse: Decodable, Equatable {
+    public init(count: Int, stations: [Station], units: String?) {
+        self.count = count
+        self.stations = stations
+        self.units = units
+    }
+    
+    public let count: Int
+    public let stations: [Station]
+    public let units: String?
 }

@@ -7,11 +7,12 @@
 
 import Foundation
 
-public struct TidePredictions: Decodable {
-    public let predications: [Tide]
+public struct TidePredictions: Decodable, Equatable {
+    private let id = UUID()
+    public let predictions: [Tide]
     
-    public init(predications: [Tide]) {
-        self.predications = predications
+    public init(predictions: [Tide]) {
+        self.predictions = predictions
     }
 }
 
@@ -53,7 +54,7 @@ public struct Tide: Decodable, Equatable, Identifiable {
         let valueString = try container.decode(String.self, forKey: .value)
         let value = Double(valueString)
         
-        let typeString = try container.decode(String.self, forKey: .value)
+        let typeString = try container.decode(String.self, forKey: .type)
         let type = TideType.init(rawValue: typeString)
         
         guard let unwrappedValue = value,
@@ -68,7 +69,7 @@ public struct Tide: Decodable, Equatable, Identifiable {
             let formatter = DateFormatter()
             formatter.calendar = Calendar(identifier: .iso8601)
             formatter.locale = Locale(identifier: "en_US_POSIX")
-            formatter.timeZone = TimeZone(secondsFromGMT: 0)
+            //formatter.timeZone = TimeZone(secondsFromGMT: 0)
             formatter.dateFormat = "yyyy-MM-dd HH:mm"
             return formatter
         }()
