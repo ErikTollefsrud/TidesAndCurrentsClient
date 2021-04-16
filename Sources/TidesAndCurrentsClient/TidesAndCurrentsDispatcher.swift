@@ -10,25 +10,25 @@ import Foundation
 
 struct TidesAndCurrentsDispatcher {
     
-//    func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType?, Never> {
-//        return URLSession.shared.dataTaskPublisher(for: URLRequest(from: request))
-//            .map { request.decode($0.data) }
-//            .replaceError(with: nil)
-//            .eraseToAnyPublisher()
-//    }
-    
-    // NOTE: Uncomment to do the dispatch but also see the HTTP response and output
     func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType?, Never> {
         return URLSession.shared.dataTaskPublisher(for: URLRequest(from: request))
-            .map {
-                print($0.response)
-                let string = String.init(data: $0.data, encoding: .utf8)
-                print(string)
-                return request.decode($0.data)
-            }
+            .map { request.decode($0.data) }
             .replaceError(with: nil)
             .eraseToAnyPublisher()
     }
+    
+    // NOTE: Uncomment to do the dispatch but also see the HTTP response and output
+//    func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType?, Never> {
+//        return URLSession.shared.dataTaskPublisher(for: URLRequest(from: request))
+//            .map {
+//                print($0.response)
+//                let string = String.init(data: $0.data, encoding: .utf8)
+//                print(string)
+//                return request.decode($0.data)
+//            }
+//            .replaceError(with: nil)
+//            .eraseToAnyPublisher()
+//    }
 }
 
 extension URLRequest {
