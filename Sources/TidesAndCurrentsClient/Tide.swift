@@ -37,7 +37,12 @@ public struct Tide: Decodable, Equatable, Identifiable {
     }
     
     
-    public init(id: UUID = UUID(), time: Date, value: Double, type: Tide.TideType) {
+    public init(
+      id: UUID = UUID(),
+      time: Date,
+      value: Double,
+      type: Tide.TideType
+    ) {
         self.id = id
         self.time = time
         self.value = value
