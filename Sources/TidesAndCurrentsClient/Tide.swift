@@ -8,8 +8,8 @@
 import Foundation
 
 public struct TidePredictions: Decodable, Equatable {
-    private let id = UUID()
-    public let predictions: [Tide]
+    private var id = UUID()
+    public var predictions: [Tide] = [Tide]()
     
     public init(predictions: [Tide]) {
         self.predictions = predictions
