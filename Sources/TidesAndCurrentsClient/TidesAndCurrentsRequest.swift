@@ -24,25 +24,34 @@ struct TidesAndCurrentsRequest<DataType> {
         }
     }
     let parameters: [String: String]
-    let decode: (Data) -> DataType?
+    let decode: (Data) throws -> DataType
 }
-
 
 extension TidesAndCurrentsRequest {
     static func dailyHighLowTide(stationID: String) -> TidesAndCurrentsRequest<TidePredictions> {
-        .init(baseURL: .station, parameters: [
-            "begin_date" : "20210323",
-            "end_date" : "20210324",
-            "station" : stationID,
-            "product" : "predictions",
-            "datum" : "mllw",
-            "units" : "english",
-            "time_zone" : "gmt",
-            "application" : "TidesAndCurrentsApp",
-            "format" : "json",
-            "interval" : "hilo"
-        ], decode: { try? JSONDecoder().decode(TidePredictions.self, from: $0)}
-)
+        .init(
+            baseURL: .station,
+            parameters: [
+                "begin_date" : "20210323",
+                "end_date" : "20210324",
+                "station" : stationID,
+                "product" : "predictions",
+                "datum" : "mllw",
+                "units" : "english",
+                "time_zone" : "gmt",
+                "application" : "TidesAndCurrentsApp",
+                "format" : "json",
+                "interval" : "hilo"
+            ],
+            decode: {
+                do {
+                    return try JSONDecoder().decode(TidePredictions.self, from: $0)
+                } catch {
+                    NSLog("error: \(error)")
+                    throw error
+                }
+            }
+        )
     }
     
     static func nextTwoDaysOfPredictions(for stationID: String) -> TidesAndCurrentsRequest<TidePredictions> {
@@ -70,7 +79,15 @@ extension TidesAndCurrentsRequest {
                 "interval" : "hilo",
                 "format" : "json"
             ],
-            decode: { try? JSONDecoder().decode(TidePredictions.self, from: $0)})
+            decode: {
+                do {
+                    return try JSONDecoder().decode(TidePredictions.self, from: $0)
+                } catch {
+                    NSLog("error: \(error)")
+                    throw error
+                }
+            }
+        )
     }
     
     static func tidePredictionStations() -> TidesAndCurrentsRequest<[Station]> {
@@ -84,12 +101,10 @@ extension TidesAndCurrentsRequest {
                     let response = try JSONDecoder().decode(StationResponse.self, from: $0)
                     return response.stations as [Station]
                 } catch {
-                    //let output = String.init(data: $0, encoding: .utf8)
                     print("Decode Error: \(error)\nData:\($0)")
-                    //print("Output: \(output)")
-                    return nil
+                    throw error
                 }
-                
-            })
+            }
+        )
     }
 }

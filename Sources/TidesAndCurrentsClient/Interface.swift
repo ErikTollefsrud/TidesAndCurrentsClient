@@ -59,12 +59,12 @@ public struct Station: Decodable, Equatable, Identifiable {
         let state = try container.decode(String.self, forKey: .state)
         
         let latitude = try container.decode(Double.self, forKey: .latitude)
-
+        
         let longitude = try container.decode(Double.self, forKey: .longitude)
         
         self.init(id: id, name: name, state: state, latitude: latitude, longitude: longitude)
     }
-
+    
     enum CodingKeys: String, CodingKey {
         case id
         case name
