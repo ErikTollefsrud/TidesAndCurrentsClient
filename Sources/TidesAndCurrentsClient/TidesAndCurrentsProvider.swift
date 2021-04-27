@@ -19,7 +19,7 @@ public enum TideError: Error, Equatable {
     case foo
 }
 
-// MARK: TidesAndCurrentsProvider
+// MARK: TidesAndCurrentsProvider  --- This will become "Client"
 public struct TidesAndCurrentsProvider {
     
     /// Search for Stations that provide tide predictions.

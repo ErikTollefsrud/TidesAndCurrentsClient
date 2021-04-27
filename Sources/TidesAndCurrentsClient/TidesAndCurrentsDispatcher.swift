@@ -12,7 +12,7 @@ struct TidesAndCurrentsDispatcher {
     
     func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType, TideError> {
         let foo = URLSession.shared
-            .dataTaskPublisher(for: URLRequest(from: request))
+            .dataTaskPublisher(for: URLRequest(from: request)) // chop below this line.
             .map { $0.data }
             .tryMap { try request.decode($0) }
             .mapError { TideError.parentError($0) }
