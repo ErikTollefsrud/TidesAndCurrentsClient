@@ -10,28 +10,29 @@ import Foundation
 
 struct TidesAndCurrentsDispatcher {
     
-    func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType, TideError> {
-        let foo = URLSession.shared
-            .dataTaskPublisher(for: URLRequest(from: request)) // chop below this line.
-            .map { $0.data }
-            .tryMap { try request.decode($0) }
-            .mapError { TideError.parentError($0) }
-            .eraseToAnyPublisher()
-        return foo
-    }
+//    func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType, TideError> {
+//        let foo = URLSession.shared
+//            .dataTaskPublisher(for: URLRequest(from: request)) // chop below this line.
+//            .map { $0.data }
+//            .tryMap { try request.decode($0) }
+//            .mapError { TideError.parentError($0) }
+//            .eraseToAnyPublisher()
+//        return foo
+//    }
     
-    // NOTE: Uncomment to do the dispatch but also see the HTTP response and output
-    //    func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType?, Never> {
-    //        return URLSession.shared.dataTaskPublisher(for: URLRequest(from: request))
-    //            .map {
-    //                print($0.response)
-    //                let string = String.init(data: $0.data, encoding: .utf8)
-    //                print(string)
-    //                return request.decode($0.data)
-    //            }
-    //            .replaceError(with: nil)
-    //            .eraseToAnyPublisher()
-    //    }
+     //NOTE: Uncomment to do the dispatch but also see the HTTP response and output
+        func dispatch<DataType>(request: TidesAndCurrentsRequest<DataType>) -> AnyPublisher<DataType, TideError> {
+            return URLSession.shared.dataTaskPublisher(for: URLRequest(from: request))
+                //.map { $0.data }
+                .tryMap {
+                    print($0.response)
+                    let string = String.init(data: $0.data, encoding: .utf8)
+                    //print(string)
+                    return try request.decode($0.data)
+                }
+                .mapError { TideError.parentError($0) }
+                .eraseToAnyPublisher()
+        }
 }
 
 extension URLRequest {

@@ -81,6 +81,8 @@ extension TidesAndCurrentsRequest {
             ],
             decode: {
                 do {
+                    let testFoo = try JSONDecoder().decode(TidePredictions.self, from: $0)
+                    print("Look here: \(testFoo)")
                     return try JSONDecoder().decode(TidePredictions.self, from: $0)
                 } catch {
                     NSLog("error: \(error)")
