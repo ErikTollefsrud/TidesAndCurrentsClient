@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Tide: Decodable, Equatable {
+public struct Tide: Decodable, Equatable, Hashable {
     public var id: UUID? = UUID()
     
     public enum TideType: String, Decodable {

@@ -83,7 +83,7 @@ public enum NOAA_APIClient {
     }
 }
 
-public struct NOAA_APIClientError: Error, Decodable {
+public struct NOAA_APIClientError: Error, Decodable, Equatable {
     public var errorMsg: String
     public var errorCode: Int
     
@@ -91,19 +91,4 @@ public struct NOAA_APIClientError: Error, Decodable {
         self.errorMsg = errorMsg
         self.errorCode = errorCode
     }
-}
-
-
-
-
-extension URLQueryItem {
-    public static let defaultTideQueryItems: [URLQueryItem] = [
-        URLQueryItem(name: "product", value: "predictions"),
-        URLQueryItem(name: "application", value: "TidesAndCurrentsApp"),
-        URLQueryItem(name: "datum", value: "mllw"),
-        URLQueryItem(name: "units", value: Units.english.rawValue),
-        URLQueryItem(name: "time_zone", value: "lst_ldt"),
-        URLQueryItem(name: "interval", value: "hilo"),
-        URLQueryItem(name: "format", value: "json")
-    ]
 }
