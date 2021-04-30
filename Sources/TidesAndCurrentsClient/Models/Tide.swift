@@ -7,16 +7,7 @@
 
 import Foundation
 
-public struct TidePredictions: Decodable, Equatable {
-    private var id: UUID? = UUID()
-    public var predictions: [Tide] = [Tide]()
-    
-    public init(predictions: [Tide]) {
-        self.predictions = predictions
-    }
-}
-
-public struct Tide: Decodable, Equatable, Identifiable {
+public struct Tide: Decodable, Equatable {
     public var id: UUID? = UUID()
     
     public enum TideType: String, Decodable {
@@ -38,7 +29,6 @@ public struct Tide: Decodable, Equatable, Identifiable {
     
     
     public init(
-      //id: UUID = UUID(),
       time: Date,
       value: Double,
       type: Tide.TideType

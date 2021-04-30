@@ -9,31 +9,22 @@ import Combine
 import Foundation
 import TidesAndCurrentsClient
 
-extension TidesClient {
-    public static let live = Self(
-        stations: {
-            let url = URL(string: "https://api.tidesandcurrents.noaa.gov/mdapi/prod/webapi/stations.json?type=tidepredictions")!
+extension TideClient {
+    public static let live = Self.init(
+        fetchTidePredictionStations: {
+            let apiRequest = NOAA_APIClient.fetchStations(.tidePredictions).request
+            guard let url = apiRequest.url else { fatalError("Could not make url from apiRequest.")}
             
-            return URLSession.shared.dataTaskPublisher(for: url)
-                .map { data, _ in data }
-                .decode(type: StationLocations.self, decoder: JSONDecoder())
-                .mapError { _ in Failure() }
-                .map { $0.stations }
+            return fetch(url)
+                .mapError { NOAA_APIClientError(errorMsg: $0.localizedDescription, errorCode: 0)}
                 .eraseToAnyPublisher()
         },
-        tidePredictionData: { stationId in
+        fetch48HourTidePredictions: { stationID in
+            let apiRequest = NOAA_APIClient.fetch48HourTidePredictions(stationID: stationID).request
+            guard let url = apiRequest.url else { fatalError("Could not make url from apiRequest.")}
             
-            let formatter = DateFormatter()
-            formatter.dateFormat = "yyyyMMdd"
-            let nowString = formatter.string(from: Date())
-            
-            let url = URL(string: "https://api.tidesandcurrents.noaa.gov/api/prod/datagetter?product=predictions&application=NOS.COOPS.TAC.WL&begin_date=\(nowString)&range=48&datum=MLLW&station=\(stationId)&time_zone=LST_LDT&units=english&interval=hilo&format=json")!
-            
-            return URLSession.shared.dataTaskPublisher(for: url)
-                .map { data, _ in data }
-                .decode(type: TidePredictions.self, decoder: JSONDecoder())
-                .mapError { _ in Failure() }
-                .map { $0 }
+            return fetch(url)
+                .mapError { NOAA_APIClientError.init(errorMsg: $0.localizedDescription, errorCode: 1)}
                 .eraseToAnyPublisher()
         })
 }

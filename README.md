@@ -1,3 +1,3 @@
 # TidesAndCurrentsClient
 
-A description of this package.
+API client for NOAA Tides and Currents stations.
