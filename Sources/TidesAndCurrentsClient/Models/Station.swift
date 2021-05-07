@@ -46,3 +46,15 @@ public struct Station: Decodable, Equatable, Identifiable {
         case longitude = "lng"
     }
 }
+
+public struct StationResponse: Decodable, Equatable {
+    public init(count: Int, stations: [Station], units: String?) {
+        self.count = count
+        self.stations = stations
+        self.units = units
+    }
+    
+    public let count: Int
+    public let stations: [Station]
+    public let units: String?
+}
