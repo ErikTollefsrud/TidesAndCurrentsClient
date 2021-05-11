@@ -7,10 +7,14 @@
 
 import Foundation
 
-public struct TidePredictions: Decodable, Equatable {
-    public var predictions: [Tide] = [Tide]()
+public struct TidePredictions: Codable, Equatable {
+    public var tides: [Tide] = [Tide]()
+
+    enum CodingKeys: String, CodingKey {
+        case tides = "predictions"
+    }
     
-    public init(predictions: [Tide]) {
-        self.predictions = predictions
+    public init(tides: [Tide]) {
+        self.tides = tides
     }
 }

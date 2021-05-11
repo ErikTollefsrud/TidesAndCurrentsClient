@@ -34,16 +34,20 @@ extension URLQueryItem {
     ]
 }
 
-public func fetch<T: Decodable>(_ url: URL) -> AnyPublisher<T, Error> {
-    URLSession.shared.dataTaskPublisher(for: url)
-        .tryMap { result in
-            let decoder = JSONDecoder()
-            guard let urlResponse = result.response as? HTTPURLResponse,
-                  (200...299).contains(urlResponse.statusCode) else {
-                let apiError = try decoder.decode(NOAA_APIClientError.self, from: result.data)
-                throw apiError
-            }
-            return try decoder.decode(T.self, from: result.data)
-        }
-        .eraseToAnyPublisher()
-}
+//public func fetch<T: Decodable>(_ url: URL) -> AnyPublisher<T, Error> {
+//    NSLog("url: \(url.absoluteString)")
+//    return URLSession.shared.dataTaskPublisher(for: url)
+//        .tryMap { result in
+//            NSLog("received: '\(result.data.count)")
+//
+//            let decoder = JSONDecoder()
+//            guard let urlResponse = result.response as? HTTPURLResponse,
+//                  (200...299).contains(urlResponse.statusCode) else {
+//                let apiError = try decoder.decode(APIError.self, from: result.data)
+//                throw apiError
+//            }
+//            return try decoder.decode(T.self, from: result.data)
+//        }
+//        .subscribe(on: DispatchQueue.global())
+//        .eraseToAnyPublisher()
+//}
