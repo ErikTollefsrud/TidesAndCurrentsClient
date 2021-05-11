@@ -8,23 +8,29 @@
 import Combine
 import Foundation
 import TidesAndCurrentsClient
+import Commons
 
 extension TideClient {
     public static let live = Self.init(
         fetchTidePredictionStations: {
-            let apiRequest = NOAA_APIClient.fetchStations(.tidePredictions).request
-            guard let url = apiRequest.url else { fatalError("Could not make url from apiRequest.")}
-            
-            return fetch(url)
-                .mapError { NOAA_APIClientError(errorMsg: $0.localizedDescription, errorCode: 0)}
+            let api = APIRequest.fetchStations(.tidePredictions)
+
+            return api
+                .dataTaskPublisher()
+                .tryMap { try api.decode(StationResponse.self, from: $0) }
+                .mapError { $0.apiError }
                 .eraseToAnyPublisher()
         },
         fetch48HourTidePredictions: { stationID in
-            let apiRequest = NOAA_APIClient.fetch48HourTidePredictions(stationID: stationID).request
-            guard let url = apiRequest.url else { fatalError("Could not make url from apiRequest.")}
-            
-            return fetch(url)
-                .mapError { NOAA_APIClientError.init(errorMsg: $0.localizedDescription, errorCode: 1)}
+            let api = APIRequest.fetch48HourTidePredictions(stationID: stationID)
+
+            return api
+                .dataTaskPublisher()
+                .tryMap { data in
+                    Commons.log("bytes: \(String .init(data: data, encoding: .utf8) ?? "")")
+                    return try api.decode(TidePredictions.self, from: data)
+                }
+                .mapError { $0.apiError }
                 .eraseToAnyPublisher()
         })
 }
