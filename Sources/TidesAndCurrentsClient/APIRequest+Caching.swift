@@ -1,6 +1,5 @@
 //
 //  DataCache.swift
-//  MarriottSwiftUI
 //
 //  Created by Klajd Deda on 7/9/20.
 //  Copyright © 2020 id-design. All rights reserved.
